@@ -91,7 +91,7 @@ int dka(ifstream& FILE)
 	vector<char> arr = readfile(0, FILE, 0);
 	int size = arr.size();
 	int n, m, k;
-	char* data = (char*)malloc(size + 1);
+	char* data = (char*)calloc(size + 1, sizeof(char));
 	for (int i = 0; i < size; i++)
 	{
 		data[i] = arr[i];
@@ -113,11 +113,12 @@ int dka(ifstream& FILE)
 	vector<char> state = readfile(3, FILE, 0);/*
 	vector<int> res(state.size());
 	transform(state.begin(), state.end(), res.begin(), [](char s) { return atoi(&s); });*/
+	if (state.size() / 3 > m)
+		return 1;
 	vector<char> dictionary;
-	char answer[] = "accepts";
 	int current_state = 1;
 	int a = -1;
-	for (int i = 0; i < m + 1; i++)
+	for (int i = 0; data[i]!=0; i++)
 	{
 		for (int z = 0; z < state.size(); z++)
 		{
@@ -152,7 +153,7 @@ int dka(ifstream& FILE)
 	for (int i = 0; i < k; i++)
 	{
 		if (current_state == _k[i])
-			cout << answer;
+			cout << "accepts";
 	}
 
 	cout << endl;
@@ -162,7 +163,7 @@ int nka(ifstream& FILE)
 	vector<char> arr = readfile(0, FILE, 0);
 	int size = arr.size();
 	int n, m, k;
-	char* data = (char*)malloc(size + 1);
+	char* data = (char*)calloc(size + 1, sizeof(char));
 	for (int i = 0; i < size; i++)
 	{
 		data[i] = arr[i];
@@ -172,7 +173,7 @@ int nka(ifstream& FILE)
 	n = atoi(&tmp);
 	m = atoi(&tmp2);
 	k = atoi(&tmp3);
-
+	
 	vector<char> z = readfile(2, FILE, k);
 	int* _k = new int[k];
 	for (int i = 0; i < k; i++)
@@ -181,16 +182,15 @@ int nka(ifstream& FILE)
 		_k[i] = atoi(&p);
 	}
 
-	vector<char> state = readfile(3, FILE, 0);/*
-											  vector<int> res(state.size());
-											  transform(state.begin(), state.end(), res.begin(), [](char s) { return atoi(&s); });*/
+	vector<char> state = readfile(3, FILE, 0);
+	if (state.size() / 3 > m)
+		return 1;
 	vector<char> dictionary;
-	char answer[] = "accepts";
 	vector<int> current_state;
 	current_state.push_back(1);
 	int a = -1;
 	vector<int> buff;
-	for (int i = 0; i < m + 1; i++)
+	for (int i = 0; data[i]!=0; i++)
 	{
 		for (int s = 0, z = 0; s < current_state.size(); s++)
 		{
@@ -228,7 +228,7 @@ int nka(ifstream& FILE)
 					if (dictionary.size() > n)
 					{
 						cout << "rejects";
-						return 0;
+						return 1;
 					}
 					num_state++;
 				}
@@ -248,7 +248,7 @@ int nka(ifstream& FILE)
 		for (int i = 0; i < k; i++)
 		{
 			if (current_state[q] == _k[i])
-				cout << answer;
+				cout << "accepts";
 		}
 	}
 	cout << endl;
